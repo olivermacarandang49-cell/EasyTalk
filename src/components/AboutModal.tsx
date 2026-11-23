@@ -209,9 +209,11 @@ export const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, languag
 
           {/* Developer Credit */}
           <div className="p-3.5 rounded-xl bg-gradient-to-r from-sky-50 to-blue-50 border border-sky-200 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-[#0F3E76] text-white flex items-center justify-center font-black text-base shrink-0 shadow-sm">
-              N
-            </div>
+            <img
+              src="/assets/developer.jpg"
+              alt="Neveallyn Sandoval Litargo"
+              className="w-20 h-24 rounded-2xl object-cover object-top border-2 border-sky-300 shadow-sm shrink-0"
+            />
             <div>
               <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
                 {isTl ? 'Developer' : 'Developer'}
