@@ -1,0 +1,6 @@
+{
+  "name": "EasyTalk for PWD: communication support",
+  "description": "An accessible communication support and AAC platform for persons with disabilities (blindness, deafness, mobility, speech, autism, and cognitive impairments).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
