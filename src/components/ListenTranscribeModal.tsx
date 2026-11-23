@@ -640,6 +640,7 @@ export const ListenTranscribeModal: React.FC<ListenTranscribeModalProps> = ({
             type="text"
             value={companionInputText}
             onChange={(e) => setCompanionInputText(e.target.value)}
+            onFocus={(e) => e.currentTarget.scrollIntoView({ behavior: 'smooth', block: 'center' })}
             placeholder={
               isTl
                 ? 'I-type dito ang nais sabihin sa kausap (Pindutin ang Enter)...'
@@ -662,7 +663,7 @@ export const ListenTranscribeModal: React.FC<ListenTranscribeModalProps> = ({
         </form>
 
         {/* Live Conversation Screen */}
-        <div className="mt-2.5 flex-1 min-h-[170px] max-h-[280px] overflow-y-auto p-3.5 sm:p-5 rounded-2xl bg-slate-950 text-white border-2 border-slate-700 flex flex-col justify-start space-y-2.5 font-sans relative">
+        <div className="mt-2.5 flex-1 min-h-[140px] max-h-[240px] overflow-y-auto p-3.5 sm:p-5 rounded-2xl bg-slate-950 text-white border-2 border-slate-700 flex flex-col justify-start space-y-2.5 font-sans relative select-text">
           {/* True Mic Permission Denied View */}
           {micPermissionBlocked && (
             <div className="my-auto p-4 rounded-2xl bg-rose-950/90 border-2 border-rose-500 text-rose-100 flex flex-col items-center text-center gap-2.5">
@@ -789,6 +790,7 @@ export const ListenTranscribeModal: React.FC<ListenTranscribeModalProps> = ({
               type="text"
               value={customReply}
               onChange={(e) => setCustomReply(e.target.value)}
+              onFocus={(e) => e.currentTarget.scrollIntoView({ behavior: 'smooth', block: 'center' })}
               placeholder={
                 isTl
                   ? 'O mag-type ng sariling isasagot sa kausap...'

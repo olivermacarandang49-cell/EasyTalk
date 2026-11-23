@@ -796,6 +796,7 @@ export const EmergencyModal: React.FC<EmergencyModalProps> = ({
                 type="text"
                 value={userName}
                 onChange={(e) => handleNameChange(e.target.value)}
+                onFocus={(e) => e.currentTarget.scrollIntoView({ behavior: 'smooth', block: 'center' })}
                 placeholder={isTl ? 'Hal. Juan Dela Cruz' : 'e.g. Alex Smith'}
                 className="w-full px-3 py-1.5 text-xs sm:text-sm rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-red-400"
               />
@@ -810,11 +811,12 @@ export const EmergencyModal: React.FC<EmergencyModalProps> = ({
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-slate-400 shrink-0" />
                 <input
-                  type="text"
+                  type="tel"
                   value={emergencyContact}
                   onChange={(e) => handleContactChange(e.target.value)}
                   placeholder={isTl ? 'Hal. Nanay: 0917-123-4567' : 'e.g. Mom: (0917) 123-4567'}
                   className="w-full px-3 py-1.5 text-xs sm:text-sm rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-red-400"
+                  inputMode="tel"
                 />
               </div>
             </div>

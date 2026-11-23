@@ -82,7 +82,7 @@ export const MessageGrid: React.FC<MessageGridProps> = ({
             </div>
 
             {/* Label */}
-            <span className="text-[11px] sm:text-base font-bold text-[#0F3E76] leading-tight line-clamp-2">
+            <span className="text-[11px] sm:text-base font-bold text-[#0F3E76] leading-tight">
               {msg.text}
             </span>
           </button>
@@ -112,7 +112,7 @@ export const MessageGrid: React.FC<MessageGridProps> = ({
             <div className="shrink-0 w-6 h-6 sm:w-10 sm:h-10 rounded-md sm:rounded-xl bg-sky-50 flex items-center justify-center p-0.5 sm:p-1.5">
               <MessageIcon name={msg.iconName} className="w-4 h-4 sm:w-7 sm:h-7" />
             </div>
-            <span className="text-[11px] sm:text-sm font-bold text-[#0F3E76] leading-snug line-clamp-2">
+            <span className="text-[11px] sm:text-sm font-bold text-[#0F3E76] leading-snug">
               {msg.text}
             </span>
           </button>

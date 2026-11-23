@@ -24,6 +24,7 @@ export const AccessGateScreen: React.FC<AccessGateScreenProps> = ({
   const touchStartY = useRef<number | null>(null);
   const touchStartX = useRef<number | null>(null);
   const hasSpokenAnnouncement = useRef(false);
+  const hasChosenRef = useRef(false); // prevents double-fire on mobile touch+click
   const [gestureFeedback, setGestureFeedback] = useState<string | null>(null);
 
   // Auto-focus container & window for instant keyboard responsiveness in iframes
@@ -37,6 +38,8 @@ export const AccessGateScreen: React.FC<AccessGateScreenProps> = ({
   }, []);
 
   const handleBlindChoice = useCallback(() => {
+    if (hasChosenRef.current) return;
+    hasChosenRef.current = true;
     triggerHapticFeedback([60, 60, 120]);
     playConditionTone('blindness');
     const isTl = voiceSettings.language === 'tl';
@@ -53,6 +56,8 @@ export const AccessGateScreen: React.FC<AccessGateScreenProps> = ({
   }, [voiceSettings, onSelectBlindMode]);
 
   const handleStandardChoice = useCallback(() => {
+    if (hasChosenRef.current) return;
+    hasChosenRef.current = true;
     triggerHapticFeedback(50);
     playSuccessChime();
     const isTl = voiceSettings.language === 'tl';

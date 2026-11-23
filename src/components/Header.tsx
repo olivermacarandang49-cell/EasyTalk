@@ -37,7 +37,7 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <header className="relative w-full bg-gradient-to-b from-sky-100/90 via-sky-50/70 to-transparent py-1 sm:pt-3 sm:pb-2 px-2 sm:px-6 md:px-8 border-b border-sky-200/60 select-none shrink-0">
       {/* Mobile Single Row (sm:hidden) */}
-      <div className="flex sm:hidden items-center justify-between gap-1 w-full">
+      <div className="flex sm:hidden items-center justify-between gap-1 w-full overflow-x-auto scrollbar-none safe-x">
         {/* Brand */}
         <div 
           onClick={onHomeClick}
@@ -57,7 +57,7 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex items-center p-0.5 bg-white/95 rounded-full border border-sky-300 shadow-2xs shrink-0">
           <button
             onClick={() => onToggleLanguage('en')}
-            className={`px-1.5 py-0.5 rounded-full text-[9px] font-bold transition-all cursor-pointer ${
+            className={`px-2 py-1.5 rounded-full text-[9px] font-bold transition-all cursor-pointer min-h-[36px] ${
               currentLanguage === 'en'
                 ? 'bg-[#0F3E76] text-white'
                 : 'text-slate-500 hover:text-slate-800'
@@ -68,14 +68,14 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
           <button
             onClick={() => onToggleLanguage('tl')}
-            className={`px-1.5 py-0.5 rounded-full text-[9px] font-bold transition-all cursor-pointer flex items-center gap-0.5 ${
+            className={`px-2 py-1.5 rounded-full text-[9px] font-bold transition-all cursor-pointer flex items-center gap-0.5 min-h-[36px] ${
               currentLanguage === 'tl'
                 ? 'bg-rose-600 text-white shadow-2xs'
                 : 'text-slate-600 hover:text-rose-700'
             }`}
             title="Tagalog (Female Voice / Boses Babae)"
           >
-            <span>👩 Tagalog</span>
+            <span>👩 TL</span>
           </button>
         </div>
 
@@ -83,7 +83,7 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex items-center p-0.5 bg-white/90 rounded-full border border-sky-300 shrink-0">
           <button
             onClick={() => onToggleUserRole('pwd')}
-            className={`px-1.5 py-0.5 rounded-full text-[9px] font-bold transition-all cursor-pointer ${
+            className={`px-2 py-1.5 rounded-full text-[9px] font-bold transition-all cursor-pointer min-h-[36px] ${
               userRole === 'pwd'
                 ? 'bg-[#0F3E76] text-white shadow-xs'
                 : 'text-slate-600'
@@ -93,22 +93,22 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
           <button
             onClick={() => onToggleUserRole('companion')}
-            className={`px-1.5 py-0.5 rounded-full text-[9px] font-bold transition-all cursor-pointer ${
+            className={`px-2 py-1.5 rounded-full text-[9px] font-bold transition-all cursor-pointer min-h-[36px] ${
               userRole === 'companion'
                 ? 'bg-emerald-600 text-white shadow-xs'
                 : 'text-slate-600'
             }`}
           >
-            Normal
+            {currentLanguage === 'tl' ? 'Kasama' : 'Companion'}
           </button>
         </div>
 
-        {/* Quick Action Icons */}
-        <div className="flex items-center gap-1 shrink-0">
+        {/* Quick Action Icons — larger touch targets */}
+        <div className="flex items-center gap-0.5 shrink-0">
           {onBackToGate && (
             <button
               onClick={onBackToGate}
-              className="flex items-center gap-0.5 px-2 py-1 rounded-full bg-white text-[#0F3E76] font-bold text-[10px] border border-sky-400 shadow-xs cursor-pointer active:scale-95"
+              className="flex items-center gap-0.5 px-2 py-2 rounded-full bg-white text-[#0F3E76] font-bold text-[10px] border border-sky-400 shadow-xs cursor-pointer active:scale-95 min-h-[36px]"
               title="Back to Mode Gate"
             >
               <ArrowLeft className="w-3 h-3 text-[#0284C7]" />
@@ -118,7 +118,7 @@ export const Header: React.FC<HeaderProps> = ({
 
           <button
             onClick={onEmergencySOS}
-            className="flex items-center gap-1 px-2 py-1 rounded-full bg-red-600 text-white font-bold text-[10px] shadow-xs active:scale-95 cursor-pointer"
+            className="flex items-center gap-1 px-2 py-2 rounded-full bg-red-600 text-white font-bold text-[10px] shadow-xs active:scale-95 cursor-pointer min-h-[36px]"
             title="Emergency SOS"
           >
             <AlertTriangle className="w-3 h-3 text-amber-200 animate-pulse" />
@@ -127,29 +127,29 @@ export const Header: React.FC<HeaderProps> = ({
 
           <button
             onClick={onToggleSound}
-            className={`p-1 rounded-full cursor-pointer ${
+            className={`p-2 rounded-full cursor-pointer min-h-[36px] min-w-[36px] flex items-center justify-center ${
               soundEnabled ? 'bg-sky-100 text-[#0F3E76]' : 'bg-slate-200 text-slate-500'
             }`}
             title="Toggle Sound"
           >
-            <Volume2 className="w-3.5 h-3.5" />
+            <Volume2 className="w-4 h-4" />
           </button>
 
           <button
             onClick={onOpenSettings}
-            className="p-1 rounded-full bg-sky-100 text-[#0F3E76] cursor-pointer"
+            className="p-2 rounded-full bg-sky-100 text-[#0F3E76] cursor-pointer min-h-[36px] min-w-[36px] flex items-center justify-center"
             title="Settings"
           >
-            <Settings2 className="w-3.5 h-3.5" />
+            <Settings2 className="w-4 h-4" />
           </button>
 
           <button
             onClick={onOpenAbout}
-            className="p-1 rounded-full bg-sky-100 text-[#0F3E76] cursor-pointer"
+            className="p-2 rounded-full bg-sky-100 text-[#0F3E76] cursor-pointer min-h-[36px] min-w-[36px] flex items-center justify-center"
             title="About EasyTalk"
             aria-label="About EasyTalk"
           >
-            <Info className="w-3.5 h-3.5" />
+            <Info className="w-4 h-4" />
           </button>
         </div>
       </div>
@@ -240,7 +240,7 @@ export const Header: React.FC<HeaderProps> = ({
               title={currentLanguage === 'tl' ? 'Kasama / Normal na kumakausap sa PWD' : 'I am a companion, doctor, family, or cashier speaking TO a PWD'}
             >
               <Users className="w-3.5 h-3.5" />
-              <span>{currentLanguage === 'tl' ? 'Normal' : 'Normal'}</span>
+              <span>{currentLanguage === 'tl' ? 'Kasama' : 'Companion'}</span>
             </button>
           </div>
         </div>

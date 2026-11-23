@@ -499,7 +499,20 @@ export const BlindTouchPadModal: React.FC<BlindTouchPadModalProps> = ({
 
     const SpeechRecognition =
       (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-    if (!SpeechRecognition) { setMicActive(false); return; }
+    if (!SpeechRecognition) {
+      setMicActive(false);
+      // On iOS Safari, SpeechRecognition is not supported — speak a notice
+      const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+      if (isIOS) {
+        speakText(
+          isTl
+            ? 'Hindi sinusuportahan ang voice recognition sa iOS Safari. Gagamitin ang mga button para sa SOS.'
+            : 'Voice recognition is not supported on iOS Safari. Use the shake gesture or 5-tap for SOS.',
+          { language: voiceSettings.language, voiceGender: voiceSettings.voiceGender }
+        );
+      }
+      return;
+    }
 
     isListeningIntentRef.current = true;
 
@@ -668,7 +681,12 @@ export const BlindTouchPadModal: React.FC<BlindTouchPadModalProps> = ({
   }, [isOpen, handleTriggerEmergency]);
 
   // ── 5-TAP SOS ─────────────────────────────────────────────────────────────
+  // On mobile, tap counting happens inside handleTouchEnd to avoid the
+  // touchend + synthesized-click double-fire conflict.
+  // On desktop (no touch events), onClick on the root div counts as a tap.
   const handleRapidTapSOS = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    // Skip synthesized click events that follow a touch — mobile already counted in touchend
+    if ((e as any).sourceCapabilities?.firesTouchEvents) return;
     if ((e.target as HTMLElement).closest('button, a')) return;
     if (hasTriggeredRef.current) return;
     const now = Date.now();
@@ -676,7 +694,7 @@ export const BlindTouchPadModal: React.FC<BlindTouchPadModalProps> = ({
     tapTimestampsRef.current = tapTimestampsRef.current.filter((t) => now - t < 3000);
     if (tapTimestampsRef.current.length >= 5) {
       tapTimestampsRef.current = [];
-      handleTriggerEmergency('5-tap');
+      handleTriggerEmergency('5-tap-desktop');
     }
   }, [handleTriggerEmergency]);
 
@@ -858,11 +876,21 @@ export const BlindTouchPadModal: React.FC<BlindTouchPadModalProps> = ({
         speakPhrase(phraseIndex, true);
         lastTapTimeRef.current = now;
       }
+
+      // Count toward 5-tap SOS (mobile only — desktop uses onClick)
+      if (!hasTriggeredRef.current) {
+        tapTimestampsRef.current.push(now);
+        tapTimestampsRef.current = tapTimestampsRef.current.filter((t) => now - t < 3000);
+        if (tapTimestampsRef.current.length >= 5) {
+          tapTimestampsRef.current = [];
+          handleTriggerEmergency('5-tap-mobile');
+        }
+      }
     }
 
     touchStartRef.current = null;
     setTimeout(() => { isSwiping.current = false; }, 300);
-  }, [goNextCategory, goPrevCategory, goNextPhrase, goPrevPhrase, speakPhrase, phraseIndex]);
+  }, [goNextCategory, goPrevCategory, goNextPhrase, goPrevPhrase, speakPhrase, phraseIndex, handleTriggerEmergency]);
 
   if (!isOpen) return null;
 
@@ -877,7 +905,7 @@ export const BlindTouchPadModal: React.FC<BlindTouchPadModalProps> = ({
       onTouchEnd={handleTouchEnd}
     >
       {/* ── HEADER ── */}
-      <div className="flex items-center justify-between px-4 py-3 bg-slate-900 border-b border-slate-800 shrink-0">
+      <div className="flex items-center justify-between px-4 py-3 bg-slate-900 border-b border-slate-800 shrink-0 safe-top safe-x">
         <div className="flex items-center gap-2.5">
           <span className="p-2 rounded-full bg-amber-400 text-slate-950 shrink-0">
             <EyeOff className="w-5 h-5" />
@@ -1003,7 +1031,7 @@ export const BlindTouchPadModal: React.FC<BlindTouchPadModalProps> = ({
       </div>
 
       {/* ── FOOTER ── */}
-      <div className="px-4 py-3 bg-slate-900 border-t border-slate-800 flex items-center gap-2 shrink-0">
+      <div className="px-4 py-3 bg-slate-900 border-t border-slate-800 flex items-center gap-2 shrink-0 safe-bottom safe-x">
         {/* List all */}
         <button
           onClick={(e) => { e.stopPropagation(); listAllPhrases(); }}
