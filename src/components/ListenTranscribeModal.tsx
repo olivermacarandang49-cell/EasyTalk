@@ -194,10 +194,13 @@ export const ListenTranscribeModal: React.FC<ListenTranscribeModalProps> = ({
 
     try {
       const recognition = new SpeechRecognition();
-      recognition.continuous = true;
+      // On Android Chrome, continuous=true can be unreliable — use false and restart manually
+      recognition.continuous = false;
       recognition.interimResults = true;
       recognition.maxAlternatives = 1;
-      recognition.lang = recLanguage === 'tl' ? 'fil-PH' : 'en-US';
+      // Use broader language codes for better Android compatibility
+      // 'fil-PH' is not always recognized — try 'fil' first, fallback handled by browser
+      recognition.lang = recLanguage === 'tl' ? 'fil' : 'en-US';
 
       recognition.onstart = () => {
         // Keep listening state on
@@ -234,27 +237,24 @@ export const ListenTranscribeModal: React.FC<ListenTranscribeModalProps> = ({
         if (e?.error === 'network') {
           setNetworkIssue(true);
         } else if (e?.error === 'not-allowed') {
-          // If mic permission blocked, show notice
           setMicPermissionBlocked(true);
         }
-
-        // CRITICAL: NEVER turn off isListening or cancel intent here!
-        // The user wants it to STAY ON unless they manually click stop.
+        // For 'no-speech', 'audio-capture', 'aborted' — let onend handle restart
+        // Do NOT set isListening to false here
       };
 
       recognition.onend = () => {
-        // Chromium ends recognition after silence or each speech sentence.
-        // As long as the user hasn't clicked stop (isListeningIntentRef.current === true),
-        // we KEEP isListening=true and restart immediately!
+        // Android Chrome stops after each utterance — restart immediately to feel continuous
         if (isListeningIntentRef.current) {
           if (restartTimeoutRef.current) {
             clearTimeout(restartTimeoutRef.current);
           }
+          // Very short delay — just enough to avoid overlapping starts
           restartTimeoutRef.current = setTimeout(() => {
             if (isListeningIntentRef.current) {
               launchRecognitionSession();
             }
-          }, 150);
+          }, 50);
         }
       };
 
@@ -463,7 +463,7 @@ export const ListenTranscribeModal: React.FC<ListenTranscribeModalProps> = ({
                 onClick={() => {
                   setRecLanguage('tl');
                   if (recognitionRef.current) {
-                    recognitionRef.current.lang = 'fil-PH';
+                    recognitionRef.current.lang = 'fil';
                   }
                 }}
                 className={`px-2 py-1 rounded-full text-[11px] font-bold cursor-pointer transition-all ${

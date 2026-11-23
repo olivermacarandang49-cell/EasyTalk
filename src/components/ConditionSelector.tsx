@@ -1,7 +1,6 @@
 import React from 'react';
 import { DisabilityConditionId, AppLanguage } from '../types';
 import {
-  BlindnessAvatar,
   DeafnessAvatar,
   MobilityAvatar,
   SpeechAvatar,
@@ -32,11 +31,6 @@ export const ConditionSelector: React.FC<ConditionSelectorProps> = ({
   const isTl = language === 'tl';
   const conditions: ConditionItem[] = [
     {
-      id: 'blindness',
-      label: isTl ? 'Bulag (Blind)' : 'Blind',
-      avatar: <BlindnessAvatar size={92} className="mx-auto drop-shadow-sm" />,
-    },
-    {
       id: 'deafness',
       label: isTl ? 'Bingi (Deaf)' : 'Deaf',
       avatar: <DeafnessAvatar size={92} className="mx-auto drop-shadow-sm" />,
@@ -65,8 +59,6 @@ export const ConditionSelector: React.FC<ConditionSelectorProps> = ({
 
   const renderMiniAvatar = (id: DisabilityConditionId) => {
     switch (id) {
-      case 'blindness':
-        return <BlindnessAvatar size={20} />;
       case 'deafness':
         return <DeafnessAvatar size={20} />;
       case 'mobility':
@@ -121,8 +113,8 @@ export const ConditionSelector: React.FC<ConditionSelectorProps> = ({
         })}
       </div>
 
-      {/* Desktop 6 Cards Container */}
-      <div className="hidden sm:grid sm:grid-cols-6 gap-2 sm:gap-2.5 lg:gap-3.5 w-full">
+      {/* Desktop 5 Cards Container */}
+      <div className="hidden sm:grid sm:grid-cols-5 gap-2 sm:gap-2.5 lg:gap-3.5 w-full">
         {conditions.map((item, index) => {
           const isSelected = selectedCondition === item.id;
           const isScanned = activeScanIndex === index;
