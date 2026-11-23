@@ -38,10 +38,10 @@ import {
 } from './utils/audioUtils';
 
 const DEFAULT_SETTINGS: VoiceSettings = {
-  language: 'tl',
-  voiceGender: 'female',
+  language: 'en',
+  voiceGender: 'male',
   rate: 0.98,
-  pitch: 1.16,
+  pitch: 0.92,
   volume: 1.0,
   voiceURI: '',
   autoSpeakOnSelect: false,
@@ -61,7 +61,7 @@ export default function App() {
   const [userRole, setUserRole] = useState<UserRoleMode>('pwd');
 
   // Currently selected message (defaults to 'Kailangan ko ng tulong' in Tagalog mode)
-  const [selectedMessage, setSelectedMessage] = useState<string>('Kailangan ko ng tulong');
+  const [selectedMessage, setSelectedMessage] = useState<string>('I need assistance');
 
   // Voice & Accessibility settings in localStorage
   const [voiceSettings, setVoiceSettings] = useState<VoiceSettings>(() => {
